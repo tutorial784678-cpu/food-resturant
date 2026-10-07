@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BiteRush Admin</title>
+  <style>
+    :root{--bg:#0a0b0e;--panel:#121419;--panel2:#181a20;--text:#f5f5f2;--muted:#9ca1ab;--line:rgba(255,255,255,.08);--accent:#ffb703;--accent2:#fb5607;--ok:#40d17c;--danger:#ff5b6e}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}
+    .shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{border-right:1px solid var(--line);padding:22px;position:sticky;top:0;height:100vh;background:#0c0d10}.brand{font-weight:950;font-size:1.2rem;display:flex;align-items:center;gap:10px;margin-bottom:28px}.mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#111}.nav{display:grid;gap:7px}.nav button{background:transparent;color:#aeb2bc;border:0;text-align:left;padding:12px 13px;border-radius:12px}.nav button.active,.nav button:hover{background:rgba(255,255,255,.06);color:#fff}.main{padding:24px;max-width:1500px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}.top h1{font-size:1.8rem;margin:0}.sub{color:var(--muted);margin:6px 0 0}.ghost,.primary,.danger{border-radius:12px;padding:11px 14px;border:1px solid var(--line)}.ghost{background:rgba(255,255,255,.04);color:#fff}.primary{background:linear-gradient(135deg,var(--accent2),#ff7a00);color:#fff;border-color:transparent;font-weight:900}.danger{background:rgba(255,91,110,.1);color:#ff9aa7;border-color:rgba(255,91,110,.2)}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:17px}.card .label{font-size:.78rem;color:var(--muted)}.card .value{font-size:1.65rem;font-weight:950;margin-top:6px}.view{display:none}.view.active{display:block}
+    .toolbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:13px}.search{background:var(--panel);border:1px solid var(--line);color:#fff;border-radius:12px;padding:11px 13px;min-width:280px}
+    table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}th,td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:.86rem}th{color:#aeb2bc;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em}tr:last-child td{border-bottom:0}.pill{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:.72rem;font-weight:900;background:rgba(255,255,255,.06)}.pill.ok{color:var(--ok);background:rgba(64,209,124,.1)}.pill.warn{color:#ffd36a;background:rgba(255,183,3,.1)}.pill.bad{color:#ff8e9c;background:rgba(255,91,110,.1)}
+    .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.product{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.product img{width:100%;aspect-ratio:1.2;object-fit:cover}.product-body{padding:14px}.row{display:flex;justify-content:space-between;gap:10px}.muted{color:var(--muted)}.small{font-size:.8rem}.actions{display:flex;gap:8px;margin-top:12px}.actions button{flex:1}
+    .form{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.8rem;color:#cfd2d8;font-weight:800}.field input,.field textarea,.field select{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px 12px;color:#fff;outline:none}.field textarea{min-height:90px}.form-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:14px}.note{color:var(--muted);font-size:.78rem;line-height:1.55;margin-top:10px}
+    .login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(440px,100%);background:var(--panel);border:1px solid var(--line);padding:26px;border-radius:22px}.login-card h1{margin:0 0 7px}.login-card p{color:var(--muted);margin-top:0}.hidden{display:none!important}.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}.modal.open{display:flex}.modal-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;width:min(720px,100%);max-height:90vh;overflow:auto;padding:18px}
+    @media(max-width:1100px){.shell{grid-template-columns:1fr}.side{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--line)}.nav{display:flex;overflow:auto}.cards{grid-template-columns:repeat(2,1fr)}.menu-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:680px){.main{padding:16px}.cards{grid-template-columns:1fr 1fr}.menu-grid,.grid2{grid-template-columns:1fr}.search{min-width:100%;width:100%}th:nth-child(4),td:nth-child(4){display:none}}
+  </style>
+</head>
+<body>
+<div id="loginView" class="login">
+  <div class="login-card"><div class="brand"><span class="mark">🍔</span>BiteRush Admin</div><h1>Sign in</h1><p>Manage products, coming-soon items and customer orders.</p>
+    <div class="field"><label>Admin password</label><input type="password" id="password" placeholder="Enter password"></div>
+    <button class="primary" style="width:100%;margin-top:13px" id="loginBtn">Sign in →</button>
+    <div class="note">Set <code>ADMIN_PASSWORD</code> in your server environment. Never put the production admin password in this HTML file.</div>
+  </div>
+</div>
+
+<div id="appView" class="shell hidden">
+  <aside class="side">
+    <div class="brand"><span class="mark">🍔</span><span id="brandLabel">BiteRush</span></div>
+    <div class="nav">
+      <button class="active" data-view="dashboard">Dashboard</button>
+      <button data-view="orders">Orders</button>
+      <button data-view="menu">Menu</button>
+      <button data-view="coming">Coming Soon</button>
+      <button data-view="settings">Settings</button>
+      <button id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="top"><div><h1 id="title">Dashboard</h1><p class="sub" id="subtitle">Today's restaurant overview.</p></div><button class="ghost" onclick="location.href='/'">Open website ↗</button></div>
+
+    <section class="view active" id="dashboard">
+      <div class="cards">
+        <div class="card"><div class="label">Orders today</div><div class="value" id="mOrders">0</div></div>
+        <div class="card"><div class="label">Revenue today</div><div class="value" id="mRevenue">PKR 0</div></div>
+        <div class="card"><div class="label">Pending</div><div class="value" id="mPending">0</div></div>
+        <div class="card"><div class="label">Menu items</div><div class="value" id="mProducts">0</div></div>
+      </div>
+      <div class="card"><div class="row" style="align-items:center"><div><strong>Recent orders</strong><div class="muted small">Live data from your server when available.</div></div><button class="ghost" onclick="showView('orders')">View all →</button></div><div id="recent" style="margin-top:14px"></div></div>
+    </section>
+
+    <section class="view" id="orders">
+      <div class="toolbar"><input id="orderSearch" class="search" placeholder="Search order, customer or phone"><button class="ghost" onclick="loadOrders()">Refresh ↻</button></div>
+      <div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ordersTable"></tbody></table></div>
+    </section>
+
+    <section class="view" id="menu">
+      <div class="toolbar"><div class="muted">Customer menu is shared through local storage in this browser.</div><button class="primary" onclick="openProduct()">+ Add product</button></div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <section class="view" id="coming">
+      <div class="toolbar"><div class="muted">Use this area for launch teasers and unavailable items.</div><button class="primary" onclick="openComing()">+ Add coming-soon</button></div>
+      <div class="menu-grid" id="comingGrid"></div>
+    </section>
+
+    <section class="view" id="settings">
+      <div class="form">
+        <div class="grid2">
+          <div class="field"><label>Restaurant name</label><input id="restaurantName"></div>
+          <div class="field"><label>Currency</label><input id="currency" value="PKR"></div>
+          <div class="field"><label>Delivery headline</label><input id="headline" value="Delivery in 25–35 min"></div>
+          <div class="field"><label>Support phone / WhatsApp</label><input id="support" placeholder="03XXXXXXXXX"></div>
+          <div class="field full"><label>Footer message</label><textarea id="footerMsg">Fresh food. Fast delivery. Secure checkout.</textarea></div>
+        </div>
+        <div class="form-actions"><button class="primary" id="saveSettings">Save settings</button></div>
+      </div>
+      <div class="form" style="margin-top:14px"><div class="row"><div><strong>Premier PayFast</strong><div class="muted small">Server-side gateway configuration</div></div><span class="pill" id="gatewayPill">Checking…</span></div><div class="note" id="gatewayNote">Merchant ID and secured key are intentionally not shown in the admin browser. Configure them as environment variables on the Node server.</div><button class="ghost" style="margin-top:13px" id="testGateway">Test gateway token endpoint</button></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="productModal"><div class="modal-card"><div class="row"><strong id="productModalTitle">Add product</strong><button class="ghost" onclick="closeModal('productModal')">✕</button></div><form id="productForm" style="margin-top:16px"><input type="hidden" id="pId"><div class="grid2">
+  <div class="field"><label>Name</label><input id="pName" required></div><div class="field"><label>Category</label><input id="pCategory" required></div>
+  <div class="field"><label>Price (PKR)</label><input id="pPrice" type="number" min="0" required></div><div class="field"><label>Tag</label><input id="pTag" placeholder="Bestseller"></div>
+  <div class="field full"><label>Image URL</label><input id="pImg" required></div><div class="field full"><label>Description</label><textarea id="pDesc"></textarea></div>
+</div><div class="form-actions"><button type="button" class="ghost" onclick="closeModal('productModal')">Cancel</button><button class="primary">Save product</button></div></form></div></div>
+
+<div class="modal" id="comingModal"><div class="modal-card"><div class="row"><strong>Add coming-soon item</strong><button class="ghost" onclick="closeModal('comingModal')">✕</button></div><form id="comingForm" style="margin-top:16px"><div class="grid2"><div class="field"><label>Name</label><input id="cName" required></div><div class="field"><label>Launch label</label><input id="cDate" placeholder="Launching Friday"></div><div class="field full"><label>Image URL</label><input id="cImg" required></div><div class="field full"><label>Short note</label><textarea id="cDesc"></textarea></div></div><div class="form-actions"><button type="button" class="ghost" onclick="closeModal('comingModal')">Cancel</button><button class="primary">Add teaser</button></div></form></div></div>
+
+<script>
+const DEFAULT_MENU = [
+  {id:"b1",name:"Smash Royale Burger",category:"Burgers",price:1190,tag:"Bestseller",desc:"Double smashed beef, cheddar, onions & house sauce.",img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=88"},
+  {id:"b2",name:"Crispy Chicken Burger",category:"Burgers",price:990,tag:"Crispy",desc:"Buttermilk chicken, slaw, pickles & spicy mayo.",img:"https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=900&q=88"},
+  {id:"c1",name:"Hot Chicken Box",category:"Chicken",price:1390,tag:"Spicy",desc:"Crispy chicken strips, fries, dip & signature seasoning.",img:"https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=900&q=88"},
+  {id:"p1",name:"Pepperoni Fire Pizza",category:"Pizza",price:1690,tag:"Popular",desc:"Mozzarella, pepperoni, jalapeño and smoky tomato sauce.",img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=88"},
+  {id:"f1",name:"Loaded Fire Fries",category:"Sides",price:790,tag:"Loaded",desc:"Crispy fries, cheese sauce, jalapeño and crispy bits.",img:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=88"},
+  {id:"w1",name:"Classic Wings",category:"Chicken",price:1090,tag:"6 pcs",desc:"Six juicy wings with your choice of hot or smoky glaze.",img:"https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=900&q=88"},
+  {id:"s1",name:"Chocolate Thick Shake",category:"Shakes",price:690,tag:"Cold",desc:"Dark chocolate, vanilla cream and brownie crunch.",img:"https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=88"},
+  {id:"s2",name:"Strawberry Cloud Shake",category:"Shakes",price:690,tag:"Sweet",desc:"Strawberry, cream and a soft vanilla finish.",img:"https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=900&q=88"},
+  {id:"d1",name:"Mini Donut Bites",category:"Dessert",price:590,tag:"New",desc:"Warm cinnamon sugar bites with chocolate dip.",img:"https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=88"}
+];
+let menu=JSON.parse(localStorage.getItem("biterush_menu")||"null")||DEFAULT_MENU;
+let coming=JSON.parse(localStorage.getItem("biterush_coming")||"null")||[];
+let settings=JSON.parse(localStorage.getItem("biterush_settings")||"null")||{restaurantName:"BiteRush",currency:"PKR",headline:"Delivery in 25–35 min",support:"",footerMsg:"Fresh food. Fast delivery. Secure checkout."};
+let orders=[];
+const $=s=>document.querySelector(s);const money=n=>"PKR "+Number(n||0).toLocaleString("en-PK");
+function closeModal(id){$("#"+id).classList.remove("open")}
+function openProduct(p=null){$("#productModalTitle").textContent=p?"Edit product":"Add product";$("#pId").value=p?.id||"";$("#pName").value=p?.name||"";$("#pCategory").value=p?.category||"Burgers";$("#pPrice").value=p?.price||"";$("#pTag").value=p?.tag||"";$("#pImg").value=p?.img||"";$("#pDesc").value=p?.desc||"";$("#productModal").classList.add("open")}
+function openComing(){ $("#comingForm").reset();$("#comingModal").classList.add("open") }
+function setLoggedIn(v){$("#loginView").classList.toggle("hidden",v);$("#appView").classList.toggle("hidden",!v)}
+async function login(){
+  const password=$("#password").value;
+  try{const r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});if(!r.ok)throw new Error("Incorrect password");setLoggedIn(true);init()}catch(e){alert(e.message)}
+}
+$("#loginBtn").onclick=login;$("#password").onkeydown=e=>{if(e.key==="Enter")login()};
+$("#logoutBtn").onclick=async()=>{await fetch("/api/admin/logout",{method:"POST"});setLoggedIn(false)}
+document.querySelectorAll(".nav button[data-view]").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+function showView(id){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===id));$("#title").textContent=id[0].toUpperCase()+id.slice(1);$("#subtitle").textContent=id==="orders"?"Customer orders and payment states.":id==="menu"?"Products visible on the main website.":id==="coming"?"Pre-launch product teasers.":id==="settings"?"Restaurant and gateway settings.":"Today's restaurant overview.";if(id==="orders")loadOrders()}
+async function init(){renderSettings();renderMenu();renderComing();await loadOrders();await gatewayHealth()}
+async function loadOrders(){
+  try{const r=await fetch("/api/admin/orders");if(r.status===401){setLoggedIn(false);return}orders=await r.json()}catch{orders=[]}
+  renderMetrics();renderOrders();renderRecent()
+}
+function renderMetrics(){const today=new Date().toISOString().slice(0,10);const od=orders.filter(o=>(o.created_at||"").slice(0,10)===today);$("#mOrders").textContent=od.length;$("#mRevenue").textContent=money(od.reduce((s,o)=>s+(o.status==="cancelled"?0:o.total||0),0));$("#mPending").textContent=orders.filter(o=>["pending","processing"].includes(o.status)).length;$("#mProducts").textContent=menu.length}
+function renderRecent(){const x=orders.slice(0,5);$("#recent").innerHTML=x.length?`<div style="display:grid;gap:8px">${x.map(o=>`<div class="row" style="padding:10px 0;border-bottom:1px solid var(--line)"><div><strong>${o.id}</strong><div class="small muted">${o.customer?.name||"Customer"} · ${new Date(o.created_at).toLocaleString()}</div></div><div style="text-align:right"><strong>${money(o.total)}</strong><div class="small">${pill(o.status)}</div></div></div>`).join("")}</div>`:`<div class="muted">No orders yet.</div>`}
+function pill(s){const c=s==="paid"||s==="completed"?"ok":s==="cancelled"?"bad":"warn";return `<span class="pill ${c}">${s||"pending"}</span>`}
+function renderOrders(){
+  const q=($("#orderSearch")?.value||"").toLowerCase();const rows=orders.filter(o=>JSON.stringify(o).toLowerCase().includes(q));
+  $("#ordersTable").innerHTML=rows.length?rows.map(o=>`<tr><td><strong>${o.id}</strong><div class="muted small">${new Date(o.created_at).toLocaleString()}</div></td><td>${o.customer?.name||"-"}<div class="muted small">${o.customer?.phone||""}</div></td><td><strong>${money(o.total)}</strong></td><td><span class="small">${o.payment_method||"-"}</span><div class="muted small">${o.transaction_id||""}</div></td><td>${pill(o.status)}</td><td><select onchange="setOrderStatus('${o.id}',this.value)" style="background:var(--panel2);color:#fff;border:1px solid var(--line);padding:8px;border-radius:9px"><option ${o.status==="pending"?"selected":""}>pending</option><option ${o.status==="processing"?"selected":""}>processing</option><option ${o.status==="paid"?"selected":""}>paid</option><option ${o.status==="preparing"?"selected":""}>preparing</option><option ${o.status==="out_for_delivery"?"selected":""}>out_for_delivery</option><option ${o.status==="completed"?"selected":""}>completed</option><option ${o.status==="cancelled"?"selected":""}>cancelled</option></select></td></tr>`).join(""):`<tr><td colspan="6" class="muted">No matching orders.</td></tr>`}
+$("#orderSearch")?.addEventListener("input",renderOrders);
+async function setOrderStatus(id,status){await fetch("/api/admin/orders/"+encodeURIComponent(id)+"/status",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status})});await loadOrders()}
+function renderMenu(){menu=JSON.parse(localStorage.getItem("biterush_menu")||"null")||DEFAULT_MENU;$("#menuGrid").innerHTML=menu.map(p=>`<div class="product"><img src="${p.img}" alt=""><div class="product-body"><div class="row"><strong>${p.name}</strong><strong>${money(p.price)}</strong></div><div class="muted small" style="margin-top:5px">${p.category} · ${p.tag||"Menu item"}</div><div class="muted small" style="margin-top:8px">${p.desc||""}</div><div class="actions"><button class="ghost" onclick='openProduct(${JSON.stringify(p).replace(/'/g,"&#39;")})'>Edit</button><button class="danger" onclick="deleteProduct('${p.id}')">Delete</button></div></div></div>`).join("")}
+$("#productForm").onsubmit=e=>{e.preventDefault();const id=$("#pId").value||("p_"+Date.now());const p={id,name:$("#pName").value.trim(),category:$("#pCategory").value.trim(),price:Number($("#pPrice").value),tag:$("#pTag").value.trim(),img:$("#pImg").value.trim(),desc:$("#pDesc").value.trim()};const i=menu.findIndex(x=>x.id===id);i>=0?menu[i]=p:menu.push(p);localStorage.setItem("biterush_menu",JSON.stringify(menu));renderMenu();renderMetrics();closeModal("productModal")}
+function deleteProduct(id){if(!confirm("Delete this product?"))return;menu=menu.filter(x=>x.id!==id);localStorage.setItem("biterush_menu",JSON.stringify(menu));renderMenu();renderMetrics()}
+function renderComing(){coming=JSON.parse(localStorage.getItem("biterush_coming")||"null")||[];$("#comingGrid").innerHTML=coming.length?coming.map((p,i)=>`<div class="product"><img src="${p.img}" alt=""><div class="product-body"><div class="row"><strong>${p.name}</strong><span class="pill warn">${p.date||"Soon"}</span></div><div class="muted small" style="margin-top:8px">${p.desc||""}</div><div class="actions"><button class="danger" onclick="deleteComing(${i})">Remove</button></div></div></div>`).join(""):`<div class="card" style="grid-column:1/-1"><div class="muted">No coming-soon products yet.</div></div>`}
+$("#comingForm").onsubmit=e=>{e.preventDefault();coming.push({name:$("#cName").value.trim(),date:$("#cDate").value.trim(),img:$("#cImg").value.trim(),desc:$("#cDesc").value.trim()});localStorage.setItem("biterush_coming",JSON.stringify(coming));renderComing();closeModal("comingModal")}
+function deleteComing(i){coming.splice(i,1);localStorage.setItem("biterush_coming",JSON.stringify(coming));renderComing()}
+function renderSettings(){$("#restaurantName").value=settings.restaurantName||"";$("#currency").value=settings.currency||"PKR";$("#headline").value=settings.headline||"";$("#support").value=settings.support||"";$("#footerMsg").value=settings.footerMsg||"";$("#brandLabel").textContent=settings.restaurantName||"BiteRush"}
+$("#saveSettings").onclick=()=>{settings={restaurantName:$("#restaurantName").value.trim()||"BiteRush",currency:$("#currency").value.trim()||"PKR",headline:$("#headline").value.trim(),support:$("#support").value.trim(),footerMsg:$("#footerMsg").value.trim()};localStorage.setItem("biterush_settings",JSON.stringify(settings));renderSettings();alert("Settings saved")}
+async function gatewayHealth(){try{const r=await fetch("/api/payfast/health");const d=await r.json();$("#gatewayPill").textContent=d.configured?"Ready":"Needs credentials";$("#gatewayPill").className="pill "+(d.configured?"ok":"warn");$("#gatewayNote").textContent=d.configured?"PayFast environment variables are detected on the server.":"Add PAYFAST_API_BASE_URL, PAYFAST_MERCHANT_ID and PAYFAST_SECURED_KEY on the server. No secrets are exposed here."}catch{$("#gatewayPill").textContent="Offline";$("#gatewayPill").className="pill bad";$("#gatewayNote").textContent="Server is not reachable."}}
+$("#testGateway").onclick=async()=>{const r=await fetch("/api/payfast/test",{method:"POST"});const d=await r.json();alert(d.message||JSON.stringify(d))}
+fetch("/api/admin/me").then(r=>{if(r.ok){setLoggedIn(true);init()}});
+</script>
+</body>
+</html>
